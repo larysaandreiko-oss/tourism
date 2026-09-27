@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tourism English — Practice Set</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2b2622; --paper:#faf6ef; --sage:#7c8b6f; --gold:#c19a3d; --red:#b34a3a;
+  --card:#ffffff; --line:#e4dccb;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#ece7de; --paper:#221f1c; --sage:#93a186; --gold:#d8b45a; --red:#d97060;
+    --card:#2a2723; --line:#3b352c;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#ece7de; --paper:#221f1c; --sage:#93a186; --gold:#d8b45a; --red:#d97060;
+  --card:#2a2723; --line:#3b352c;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;line-height:1.6;padding:1.2rem 1rem 3rem;}
+h1{font-family:"Fraunces",Georgia,serif;font-size:1.5rem;margin:.2rem 0 .2rem;}
+p.sub{margin:0 0 1.2rem;opacity:.75;font-size:.92rem;}
+nav{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem;position:sticky;top:env(safe-area-inset-top,0px);background:var(--paper);padding:.4rem 0;z-index:5;}
+nav button{font-family:"Source Sans 3",sans-serif;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--ink);padding:.5rem .9rem;border-radius:999px;cursor:pointer;font-size:.88rem;}
+nav button.active{background:var(--sage);color:var(--paper);border-color:var(--sage);}
+section{display:none;max-width:760px;margin:0 auto;}
+section.active{display:block;}
+h2{font-family:"Fraunces",Georgia,serif;font-size:1.2rem;border-bottom:2px solid var(--gold);padding-bottom:.3rem;margin-top:0;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem;}
+.match-wrap{display:flex;gap:1rem;flex-wrap:wrap;}
+.match-col{flex:1;min-width:230px;list-style:none;padding:0;margin:0;}
+.match-col li{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.55rem .7rem;margin-bottom:.45rem;cursor:pointer;font-size:.92rem;transition:background .15s,border-color .15s;}
+.match-col li.selected{border-color:var(--gold);background:color-mix(in srgb, var(--gold) 15%, var(--card));}
+.match-col li.correct{border-color:var(--sage);background:color-mix(in srgb, var(--sage) 20%, var(--card));cursor:default;opacity:.8;}
+.match-col li.incorrect{border-color:var(--red);background:color-mix(in srgb, var(--red) 20%, var(--card));}
+.de{font-style:italic;color:var(--sage);}
+.controls{display:flex;gap:.6rem;flex-wrap:wrap;margin:.8rem 0;align-items:center;}
+button.act{font-family:"Source Sans 3",sans-serif;font-weight:600;background:var(--ink);color:var(--paper);border:none;padding:.55rem 1rem;border-radius:8px;cursor:pointer;font-size:.88rem;}
+button.act.secondary{background:transparent;color:var(--ink);border:1px solid var(--line);}
+.status{font-family:"JetBrains Mono",monospace;font-size:.82rem;opacity:.8;}
+.story p{margin:0 0 1rem;font-size:.98rem;}
+#sentencesBox ol{padding-left:1.2rem;margin:0;}
+#sentencesBox li{margin-bottom:.7rem;font-size:.96rem;}
+input.gap{font-family:"JetBrains Mono",monospace;border:none;border-bottom:2px solid var(--gold);background:transparent;color:var(--ink);width:9.5em;padding:.1rem .2rem;font-size:.94rem;}
+input.gap.ok{border-color:var(--sage);color:var(--sage);}
+input.gap.bad{border-color:var(--red);color:var(--red);}
+input.gap.revealed{border-color:var(--sage);font-style:italic;}
+.dialogue{margin-bottom:1.3rem;}
+.dialogue p{margin:.35rem 0;font-size:.96rem;}
+.speaker{font-weight:600;}
+.tag{font-family:"JetBrains Mono",monospace;font-size:.75rem;background:var(--line);color:var(--ink);padding:.1rem .4rem;border-radius:4px;}
+</style>
+</head>
+<body>
+<h1>The Tourist Industry — Practice Set</h1>
+<p class="sub">Matching · Story gap-fill · Translanguaging dialogues — B1/C1</p>
+
+<nav>
+  <button class="tab-btn active" data-t="match">1. Matching</button>
+  <button class="tab-btn" data-t="sentences">2. Gap-fill</button>
+  <button class="tab-btn" data-t="story">3. Story</button>
+  <button class="tab-btn" data-t="dialog">4. Dialogues</button>
+</nav>
+
+<section id="match" class="active">
+  <h2>Match English ↔ German</h2>
+  <p class="sub">Click an English term, then click its German equivalent.</p>
+  <div class="card">
+    <div class="match-wrap">
+      <ul class="match-col" id="colEn"></ul>
+      <ul class="match-col" id="colDe"></ul>
+    </div>
+    <div class="controls">
+      <button class="act secondary" onclick="revealMatch()">Reveal remaining</button>
+      <span class="status" id="matchStatus">0 / 0 matched</span>
+    </div>
+  </div>
+</section>
+
+<section id="sentences">
+  <h2>Gap-fill: individual sentences</h2>
+  <p class="sub">Type the missing word/expression. The first letter is shown as a hint.</p>
+  <div class="card" id="sentencesBox">
+    <ol>
+      <li>The old harbor used to be quiet, but now it feels very <input class="gap" data-a="touristy" placeholder="t..."></li>
+      <li>We booked our <input class="gap" data-a="accommodation" placeholder="a..."> three months before the trip.</li>
+      <li>They spent their honeymoon at an <input class="gap" data-a="all-inclusive resort" placeholder="a..."> in the Maldives.</li>
+      <li>Our travel agent sent us a detailed <input class="gap" data-a="itinerary" placeholder="i..."> for the two-week tour.</li>
+      <li>We joined a <input class="gap" data-a="guided tour" placeholder="g..."> of the old town to learn about its history.</li>
+      <li>After checking in, we went out to <input class="gap" data-a="go sightseeing" placeholder="g..."> around the city centre.</li>
+      <li>Venice is one of Europe's biggest <input class="gap" data-a="tourist hotspot" placeholder="t...">s.</li>
+      <li>Tourism helps to <input class="gap" data-a="generate revenue" placeholder="g..."> for the local economy.</li>
+      <li>The festival celebrates the region's <input class="gap" data-a="cultural heritage" placeholder="c...">.</li>
+      <li>While in Thailand, we made sure to <input class="gap" data-a="sample the local cuisine" placeholder="s...">.</li>
+      <li>The government is promoting <input class="gap" data-a="sustainable tourism" placeholder="s..."> to protect the coral reefs.</li>
+      <li>Too many visitors can <input class="gap" data-a="strain local infrastructure" placeholder="s...">, causing traffic jams and water shortages.</li>
+      <li>Careless tourism can <input class="gap" data-a="degrade the environment" placeholder="d..."> through pollution and littering.</li>
+      <li>Local laws aim to <input class="gap" data-a="preserve natural resources" placeholder="p..."> like forests and clean water.</li>
+      <li>The park relies on <input class="gap" data-a="conservation efforts" placeholder="c..."> to protect endangered species.</li>
+      <li><input class="gap" data-a="long-haul travel" placeholder="l..."> to Australia can take over 20 hours.</li>
+      <li>Choosing trains over planes can help <input class="gap" data-a="reduce the carbon footprint" placeholder="r...">.</li>
+      <li>Venice introduced an entry fee to <input class="gap" data-a="combat overtourism" placeholder="c...">.</li>
+      <li>The restaurant near the monument turned out to be a total <input class="gap" data-a="tourist trap" placeholder="t...">.</li>
+      <li>They prefer destinations that are <input class="gap" data-a="off the beaten path" placeholder="o..."> rather than crowded resorts.</li>
+      <li>Many families choose a <input class="gap" data-a="package holiday" placeholder="p..."> because it's cheap and convenient.</li>
+      <li>Tourism can <input class="gap" data-a="boost the local economy" placeholder="b..."> by creating jobs in hotels and restaurants.</li>
+      <li>Critics argue that mass tourism can <input class="gap" data-a="commodify culture" placeholder="c...">, stripping it of its original meaning.</li>
+    </ol>
+    <div class="controls">
+      <button class="act" onclick="checkGaps('sentencesBox','sentencesStatus')">Check answers</button>
+      <button class="act secondary" onclick="revealGaps('sentencesBox','sentencesStatus')">Reveal all</button>
+      <span class="status" id="sentencesStatus"></span>
+    </div>
+  </div>
+</section>
+
+<section id="story">
+  <h2>Fill in the gaps</h2>
+  <p class="sub">Type the missing word/expression. The first letter is shown as a hint.</p>
+  <div class="card story" id="storyBox">
+    <p>Last summer, my family booked a cheap <input class="gap" data-a="package holiday" placeholder="p..."> to a small coastal town. It used to be quiet, but nowadays it feels very <input class="gap" data-a="touristy" placeholder="t...">. We found affordable <input class="gap" data-a="accommodation" placeholder="a..."> close to the beach, although our friends chose an <input class="gap" data-a="all-inclusive resort" placeholder="a..."> a few kilometres away instead. Before leaving, I planned a detailed <input class="gap" data-a="itinerary" placeholder="i..."> so that we wouldn't waste any time. On the first morning, we joined a <input class="gap" data-a="guided tour" placeholder="g..."> of the old town and later went to <input class="gap" data-a="go sightseeing" placeholder="g..."> around the harbour. The main square has become a real <input class="gap" data-a="tourist hotspot" placeholder="t...">, attracting thousands of visitors every summer.</p>
+    <p>Local business owners say tourism helps to <input class="gap" data-a="generate revenue" placeholder="g..."> for the town and protects its <input class="gap" data-a="cultural heritage" placeholder="c...">. In the evenings, we made sure to <input class="gap" data-a="sample the local cuisine" placeholder="s..."> at a small family-run taverna. However, experts warn that without <input class="gap" data-a="sustainable tourism" placeholder="s..."> policies, popular places risk serious problems: huge crowds can <input class="gap" data-a="strain local infrastructure" placeholder="s..."> such as roads and water supply, and careless behaviour can <input class="gap" data-a="degrade the environment" placeholder="d...">. To fight this, the local council is trying to <input class="gap" data-a="preserve natural resources" placeholder="p..."> like forests and clean water through new <input class="gap" data-a="conservation efforts" placeholder="c...">.</p>
+    <p>Because our trip involved a twelve-hour flight, this kind of <input class="gap" data-a="long-haul travel" placeholder="l..."> also made me think about ways to <input class="gap" data-a="reduce the carbon footprint" placeholder="r...">. Meanwhile, several nearby cities have started limiting visitor numbers to <input class="gap" data-a="combat overtourism" placeholder="c...">. We avoided the worst <input class="gap" data-a="tourist trap" placeholder="t..."> restaurants near the beach and instead explored a village that was <input class="gap" data-a="off the beaten path" placeholder="o...">, where prices were much lower. Overall, tourism can <input class="gap" data-a="boost the local economy" placeholder="b...">, but critics argue that it sometimes <input class="gap" data-a="commodify culture" placeholder="c...">, turning genuine traditions into cheap souvenirs.</p>
+    <div class="controls">
+      <button class="act" onclick="checkGaps('storyBox','storyStatus')">Check answers</button>
+      <button class="act secondary" onclick="revealGaps('storyBox','storyStatus')">Reveal all</button>
+      <span class="status" id="storyStatus"></span>
+    </div>
+  </div>
+</section>
+
+<section id="dialog">
+  <h2>Translanguaging dialogues</h2>
+  <p class="sub">German words appear in the German speech — type the English equivalent in the gap.</p>
+  <div class="card" id="dialogBox">
+    <div class="dialogue">
+      <p><span class="speaker">A:</span> Wie war dein Urlaub? Habt ihr eine <span class="tag">Pauschalreise</span> gebucht?</p>
+      <p><span class="speaker">B:</span> Yes, we booked a <input class="gap" data-a="package holiday" placeholder="p...">! It was our first time trying that kind of trip.</p>
+      <p><span class="speaker">A:</span> Und die Unterkunft — war sie gut?</p>
+      <p><span class="speaker">B:</span> The <input class="gap" data-a="accommodation" placeholder="a..."> was lovely, right on the beach.</p>
+      <p><span class="speaker">A:</span> War es dort sehr <span class="tag">touristisch überlaufen</span>?</p>
+      <p><span class="speaker">B:</span> Honestly, yes — it was extremely <input class="gap" data-a="touristy" placeholder="t...">, especially near the old town.</p>
+      <p><span class="speaker">A:</span> Habt ihr die lokale Küche probiert?</p>
+      <p><span class="speaker">B:</span> Of course! We tried to <input class="gap" data-a="sample the local cuisine" placeholder="s..."> every evening.</p>
+      <p><span class="speaker">A:</span> Klingt nach einem echten <span class="tag">Touristenmagnet</span>.</p>
+      <p><span class="speaker">B:</span> It really is a <input class="gap" data-a="tourist hotspot" placeholder="t...">, especially in August.</p>
+    </div>
+    <div class="dialogue">
+      <p><span class="speaker">A:</span> Some people say tourism can <span class="tag">die lokale Wirtschaft ankurbeln</span> — is that true?</p>
+      <p><span class="speaker">B:</span> Yes, it really can <input class="gap" data-a="boost the local economy" placeholder="b...">, especially in small towns.</p>
+      <p><span class="speaker">A:</span> But doesn't it also <span class="tag">die Umwelt schädigen</span>?</p>
+      <p><span class="speaker">B:</span> Unfortunately, careless tourism can <input class="gap" data-a="degrade the environment" placeholder="d...">, yes.</p>
+      <p><span class="speaker">A:</span> What about trying to <span class="tag">den CO2-Fußabdruck reduzieren</span> — do tourists even think about that?</p>
+      <p><span class="speaker">B:</span> Not enough. More people should try to <input class="gap" data-a="reduce the carbon footprint" placeholder="r..."> when they travel.</p>
+      <p><span class="speaker">A:</span> And what about cities <span class="tag">den Overtourism bekämpfen</span>?</p>
+      <p><span class="speaker">B:</span> Many are trying to <input class="gap" data-a="combat overtourism" placeholder="c...">, for example by limiting cruise ships.</p>
+      <p><span class="speaker">A:</span> Is <span class="tag">nachhaltiger Tourismus</span> really possible?</p>
+      <p><span class="speaker">B:</span> I believe <input class="gap" data-a="sustainable tourism" placeholder="s..."> is possible, but it needs real commitment from governments and travellers alike.</p>
+    </div>
+    <div class="controls">
+      <button class="act" onclick="checkGaps('dialogBox','dialogStatus')">Check answers</button>
+      <button class="act secondary" onclick="revealGaps('dialogBox','dialogStatus')">Reveal all</button>
+      <span class="status" id="dialogStatus"></span>
+    </div>
+  </div>
+</section>
+
+<script>
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById(b.dataset.t).classList.add('active');
+  });
+});
+
+// Matching
+const pairs = [
+  ["touristy","touristisch überlaufen"],
+  ["accommodation","die Unterkunft"],
+  ["all-inclusive resort","die All-Inclusive-Anlage"],
+  ["itinerary","die Reiseroute"],
+  ["guided tour","die geführte Tour"],
+  ["go sightseeing","besichtigen"],
+  ["tourist hotspot","der Touristenmagnet"],
+  ["generate revenue","Einnahmen generieren"],
+  ["cultural heritage","das Kulturerbe"],
+  ["sample the local cuisine","die lokale Küche probieren"],
+  ["sustainable tourism","der nachhaltige Tourismus"],
+  ["strain local infrastructure","die lokale Infrastruktur belasten"],
+  ["degrade the environment","die Umwelt schädigen"],
+  ["preserve natural resources","natürliche Ressourcen schützen"],
+  ["conservation efforts","Naturschutzbemühungen"],
+  ["long-haul travel","die Langstreckenreise"],
+  ["reduce the carbon footprint","den CO2-Fußabdruck reduzieren"],
+  ["combat overtourism","den Overtourism bekämpfen"],
+  ["tourist trap","die Touristenfalle"],
+  ["off the beaten path","abseits der ausgetretenen Pfade"],
+  ["package holiday","die Pauschalreise"],
+  ["boost the local economy","die lokale Wirtschaft ankurbeln"],
+  ["commodify culture","die Kultur kommerzialisieren"]
+];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const enList = pairs.map((p,i)=>({t:p[0],i}));
+const deList = shuffle(pairs.map((p,i)=>({t:p[1],i})));
+const colEn = document.getElementById('colEn'), colDe = document.getElementById('colDe');
+enList.forEach(item=>{
+  const li=document.createElement('li'); li.textContent=item.t; li.dataset.i=item.i; li.dataset.side='en';
+  colEn.appendChild(li);
+});
+deList.forEach(item=>{
+  const li=document.createElement('li'); li.textContent=item.t; li.dataset.i=item.i; li.dataset.side='de'; li.classList.add('de');
+  colDe.appendChild(li);
+});
+let selEn=null, selDe=null, matched=0;
+function updateStatus(){document.getElementById('matchStatus').textContent = matched+' / '+pairs.length+' matched';}
+updateStatus();
+[colEn,colDe].forEach(col=>{
+  col.addEventListener('click',e=>{
+    const li=e.target.closest('li'); if(!li||li.classList.contains('correct')) return;
+    if(li.dataset.side==='en'){ if(selEn) selEn.classList.remove('selected'); selEn=li; li.classList.add('selected'); }
+    else { if(selDe) selDe.classList.remove('selected'); selDe=li; li.classList.add('selected'); }
+    if(selEn && selDe){
+      if(selEn.dataset.i===selDe.dataset.i){
+        selEn.classList.remove('selected'); selDe.classList.remove('selected');
+        selEn.classList.add('correct'); selDe.classList.add('correct');
+        matched++; updateStatus(); selEn=null; selDe=null;
+      } else {
+        selEn.classList.add('incorrect'); selDe.classList.add('incorrect');
+        setTimeout(()=>{selEn.classList.remove('selected','incorrect');selDe.classList.remove('selected','incorrect');selEn=null;selDe=null;},550);
+      }
+    }
+  });
+});
+function revealMatch(){
+  document.querySelectorAll('#colEn li:not(.correct)').forEach(li=>li.classList.add('correct'));
+  document.querySelectorAll('#colDe li').forEach(deLi=>{
+    if(!deLi.classList.contains('correct')){
+      const match = document.querySelector('#colEn li[data-i="'+deLi.dataset.i+'"]');
+      deLi.classList.add('correct');
+    }
+  });
+  matched = pairs.length; updateStatus();
+}
+
+// Gap-fill (story + dialogues)
+function checkGaps(boxId,statusId){
+  const box=document.getElementById(boxId); let ok=0,total=0;
+  box.querySelectorAll('input.gap').forEach(inp=>{
+    total++; inp.classList.remove('ok','bad','revealed');
+    const val=inp.value.trim().toLowerCase(), ans=inp.dataset.a.toLowerCase();
+    if(val===ans){inp.classList.add('ok');ok++;} else {inp.classList.add('bad');}
+  });
+  document.getElementById(statusId).textContent = ok+' / '+total+' correct';
+}
+function revealGaps(boxId,statusId){
+  const box=document.getElementById(boxId);
+  box.querySelectorAll('input.gap').forEach(inp=>{
+    inp.value=inp.dataset.a; inp.classList.remove('bad'); inp.classList.add('revealed');
+  });
+  document.getElementById(statusId).textContent = 'all revealed';
+}
+</script>
+</body>
+</html>
